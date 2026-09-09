@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const standaloneApp = path.join(appRoot, '.next', 'standalone', 'web');
 const standaloneRoot = path.join(appRoot, '.next', 'standalone');
+const apiModules = path.join(standaloneRoot, 'api', 'node_modules');
 
 if (!existsSync(path.join(standaloneApp, 'server.js'))) {
   throw new Error('Next.js standalone server was not generated.');
@@ -12,7 +13,9 @@ if (!existsSync(path.join(standaloneApp, 'server.js'))) {
 
 mkdirSync(path.join(standaloneApp, '.next'), { recursive: true });
 cpSync(path.join(standaloneRoot, 'node_modules'), path.join(standaloneApp, 'node_modules'), { recursive: true });
-cpSync(path.join(standaloneRoot, 'api', 'node_modules'), path.join(standaloneApp, 'node_modules'), { recursive: true });
+if (existsSync(apiModules)) {
+  cpSync(apiModules, path.join(standaloneApp, 'node_modules'), { recursive: true });
+}
 cpSync(path.join(appRoot, '.next', 'static'), path.join(standaloneApp, '.next', 'static'), { recursive: true });
 cpSync(path.join(appRoot, 'public'), path.join(standaloneApp, 'public'), { recursive: true });
 
@@ -25,7 +28,7 @@ if (existsSync(generatedModules)) {
     const modulePath = path.join(generatedModules, entry);
     if (entry.startsWith('pg-') && lstatSync(modulePath).isSymbolicLink()) {
       unlinkSync(modulePath);
-      cpSync(path.join(standaloneRoot, 'api', 'node_modules', 'pg'), modulePath, { recursive: true });
+      cpSync(path.join(standaloneApp, 'node_modules', 'pg'), modulePath, { recursive: true });
     }
   }
 }
