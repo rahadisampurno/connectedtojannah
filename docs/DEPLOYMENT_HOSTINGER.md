@@ -16,7 +16,7 @@ Hubungkan repository GitHub dan gunakan konfigurasi berikut:
 - Node.js: 22.x
 - Install: `npm ci` (otomatis dari `package-lock.json`)
 - Build: `npm run build`
-- Output directory: `web/.next`
+- Output directory: `web/.next/standalone/web`
 - Output mode: Next.js standalone (dikonfigurasi di codebase)
 - Automatic deployment: aktif
 
