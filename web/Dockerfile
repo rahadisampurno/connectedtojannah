@@ -17,8 +17,6 @@ WORKDIR /workspace
 COPY --from=build --chown=node:node /workspace/package.json /workspace/package-lock.json ./
 COPY --from=build --chown=node:node /workspace/node_modules ./node_modules
 COPY --from=build --chown=node:node /workspace/web/.next ./web/.next
-COPY --from=build --chown=node:node /workspace/web/public ./web/public
-COPY --from=build --chown=node:node /workspace/web/next.config.ts ./web/next.config.ts
 COPY --from=build --chown=node:node /workspace/api /workspace/api
 RUN npm prune --omit=dev && npm cache clean --force
 USER node

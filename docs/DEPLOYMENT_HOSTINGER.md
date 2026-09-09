@@ -16,7 +16,8 @@ Hubungkan repository GitHub dan gunakan konfigurasi berikut:
 - Node.js: 22.x
 - Install: `npm ci` (otomatis dari `package-lock.json`)
 - Build: `npm run build`
-- Start: `npm start`
+- Output directory: `web/.next`
+- Output mode: Next.js standalone (dikonfigurasi di codebase)
 - Automatic deployment: aktif
 
 Tambahkan environment variables di hPanel, bukan di Git:
