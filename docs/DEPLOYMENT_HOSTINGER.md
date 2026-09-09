@@ -2,7 +2,7 @@
 
 ## Arsitektur production
 
-Deploy hanya satu aplikasi Node.js dari root repository. Script root membangun aplikasi Next.js di folder `web`; UI dan seluruh backend berjalan dalam process yang sama, dan browser mengakses API same-origin melalui `/api/v1`. Folder `api/src` berisi service domain yang dibundel oleh build Next.js dan tidak dibuat sebagai aplikasi Hostinger kedua.
+Deploy hanya satu aplikasi Node.js dari folder `web`. UI dan seluruh backend berjalan dalam process Next.js yang sama, dan browser mengakses API same-origin melalui `/api/v1`. Folder `api/src` berisi service domain yang dibundel oleh build Next.js dan tidak dibuat sebagai aplikasi Hostinger kedua.
 
 Data tetap persisten di PostgreSQL. Karena database tersebut bukan process Node.js aplikasi, ia dapat memakai PostgreSQL eksternal (misalnya Supabase) tanpa melanggar pola satu service/satu aplikasi. Gunakan connection string SSL yang bisa diakses dari internet dan aktifkan backup pada penyedia database.
 
@@ -11,13 +11,13 @@ Data tetap persisten di PostgreSQL. Karena database tersebut bukan process Node.
 Hubungkan repository GitHub dan gunakan konfigurasi berikut:
 
 - Branch: `main`
-- Root directory: kosong / root repository
+- Root directory: `web`
 - Framework: Next.js
 - Node.js: 22.x
 - Install: `npm ci` (otomatis dari `package-lock.json`)
 - Build: `npm run build`
-- Output directory: `web/.next/standalone/web`
-- Output mode: Next.js standalone (dikonfigurasi di codebase)
+- Output directory: `.next`
+- Output mode: Next.js standar, sama seperti aplikasi FMO
 - Automatic deployment: aktif
 
 Tambahkan environment variables di hPanel, bukan di Git:

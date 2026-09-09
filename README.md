@@ -26,7 +26,7 @@ UI dan API berjalan dari satu process Node.js dan satu origin. API tersedia di `
 
 Routes: `/` landing page publik, `/login` dan `/register` autentikasi aktif, serta `/app` untuk Home, Amalan, Together/Circles, challenge, undangan, Journey/Garden, dan profil.
 
-Untuk production Hostinger, pilih root repository (kosongkan root directory), Node.js 22, build `npm run build`, dan start `npm start`. Aplikasi membutuhkan PostgreSQL eksternal melalui `DATABASE_URL`; detail lengkap ada di [panduan deployment Hostinger](docs/DEPLOYMENT_HOSTINGER.md).
+Untuk production Hostinger, pilih root directory `web`, Node.js 22, build `npm run build`, start `npm start`, dan output `.next`. Aplikasi membutuhkan PostgreSQL eksternal melalui `DATABASE_URL`; detail lengkap ada di [panduan deployment Hostinger](docs/DEPLOYMENT_HOSTINGER.md).
 
 ## Menjalankan mobile
 
