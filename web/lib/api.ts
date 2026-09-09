@@ -1,6 +1,6 @@
 'use client';
 
-export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3002/v1';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '/api/v1';
 const tokenKey = 'ctj_access_token';
 
 export type SessionUser = { id:string;email:string;displayName:string;avatar:string;joinedAt:string;emailVerified:boolean;onboardingCompleted:boolean;timezone:string;language:string };

@@ -6,7 +6,7 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:3002/v1", "type": "string" },
+    { "key": "baseUrl", "value": "http://localhost:3000/api/v1", "type": "string" },
     { "key": "email", "value": "", "type": "string" },
     { "key": "password", "value": "", "type": "string" },
     { "key": "accessToken", "value": "", "type": "string" },

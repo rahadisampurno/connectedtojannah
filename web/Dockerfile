@@ -1,19 +1,25 @@
 FROM node:22-alpine AS deps
-WORKDIR /app
-COPY package.json pnpm-lock.yaml* ./
-RUN corepack enable && pnpm install --no-frozen-lockfile
+WORKDIR /workspace
+COPY package.json package-lock.json ./
+RUN npm ci
+
 FROM node:22-alpine AS build
-WORKDIR /app
-ARG NEXT_PUBLIC_API_URL
-ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-RUN corepack enable && pnpm build
-FROM node:22-alpine
+WORKDIR /workspace
+COPY --from=deps /workspace/node_modules ./node_modules
+COPY package.json package-lock.json ./
+COPY web /workspace/web
+COPY api/src /workspace/api/src
+RUN npm run build
+
+FROM node:22-alpine AS runner
 ENV NODE_ENV=production PORT=3000 HOSTNAME=0.0.0.0
-WORKDIR /app
-COPY --from=build /app/.next/standalone ./
-COPY --from=build /app/.next/static ./.next/static
-COPY --from=build /app/public ./public
+WORKDIR /workspace
+COPY --from=build --chown=node:node /workspace/package.json /workspace/package-lock.json ./
+COPY --from=build --chown=node:node /workspace/node_modules ./node_modules
+COPY --from=build --chown=node:node /workspace/web/.next ./web/.next
+COPY --from=build --chown=node:node /workspace/web/public ./web/public
+COPY --from=build --chown=node:node /workspace/web/next.config.ts ./web/next.config.ts
+COPY --from=build --chown=node:node /workspace/api /workspace/api
+RUN npm prune --omit=dev && npm cache clean --force
 USER node
-CMD ["node","server.js"]
+CMD ["npm","start"]

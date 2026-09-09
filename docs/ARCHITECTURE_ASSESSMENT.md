@@ -6,7 +6,7 @@ Repository kosong pada 7 September 2026: tidak ada source, dokumen, aset, atau r
 
 ## Keputusan
 
-- Next.js mobile-first/PWA menjadi klien MVP dan NestJS menjadi API modular. Flutter dipertahankan sebagai jalur native opsional, bukan dependency peluncuran awal.
+- Next.js mobile-first/PWA menjadi aplikasi full-stack MVP. Route Handler `/api/v1` menggunakan service domain dari `api/src`, sehingga frontend dan backend berjalan dalam satu process Node.js. Flutter dipertahankan sebagai jalur native opsional, bukan dependency peluncuran awal.
 - Progress dihitung server-side. Klien mengirim `clientMutationId`; server menyimpan hasil idempoten.
 - UI memakai optimistic feedback terbatas, tetapi selalu mengganti state dengan response server.
 - Repository domain dipisahkan dari controller dan kini menggunakan PostgreSQL tanpa mengubah kontrak klien.
