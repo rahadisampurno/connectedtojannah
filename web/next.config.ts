@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ['pg'],
   turbopack: {
     root: path.join(process.cwd(), '..'),
+    resolveAlias: {
+      '@nestjs/common': './web/node_modules/@nestjs/common',
+      pg: './web/node_modules/pg',
+    },
   },
   images: { formats: ['image/avif', 'image/webp'] },
   async headers() {
