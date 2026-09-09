@@ -1,0 +1,119 @@
+{
+  "info": {
+    "_postman_id": "3dc6e69d-9db6-4b11-a599-ctj-circle-testing",
+    "name": "Connected to Jannah - Circle Testing",
+    "description": "Development-only flow: login, resolve Circle ID, preview a Circle level, and restore real EXP.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3002/v1", "type": "string" },
+    { "key": "email", "value": "", "type": "string" },
+    { "key": "password", "value": "", "type": "string" },
+    { "key": "accessToken", "value": "", "type": "string" },
+    { "key": "circleId", "value": "", "type": "string" },
+    { "key": "level", "value": "20", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "1. Login dan simpan JWT",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Login berhasil', function () { pm.response.to.have.status(201); });",
+              "const payload = pm.response.json();",
+              "pm.collectionVariables.set('accessToken', payload.accessToken);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+      }
+    },
+    {
+      "name": "2. Ambil Circle pertama",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Overview berhasil', function () { pm.response.to.have.status(200); });",
+              "const circles = pm.response.json().circles || [];",
+              "if (circles.length) pm.collectionVariables.set('circleId', circles[0].id);",
+              "pm.test('Akun memiliki Circle', function () { pm.expect(circles.length).to.be.above(0); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }],
+        "url": { "raw": "{{baseUrl}}/overview", "host": ["{{baseUrl}}"], "path": ["overview"] }
+      }
+    },
+    {
+      "name": "3. Preview level Circle",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Level Circle diperbarui', function () { pm.response.to.have.status(200); });",
+              "pm.test('Level sesuai request', function () { pm.expect(pm.response.json().level).to.eql(Number(pm.collectionVariables.get('level'))); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" },
+          { "key": "Content-Type", "value": "application/json", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"level\": {{level}}\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/circles/{{circleId}}/testing/level", "host": ["{{baseUrl}}"], "path": ["circles", "{{circleId}}", "testing", "level"] }
+      }
+    },
+    {
+      "name": "4. Cek detail Circle",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }],
+        "url": { "raw": "{{baseUrl}}/circles/{{circleId}}", "host": ["{{baseUrl}}"], "path": ["circles", "{{circleId}}"] }
+      }
+    },
+    {
+      "name": "5. Reset ke EXP asli",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": ["pm.test('Override berhasil dihapus', function () { pm.response.to.have.status(200); });"]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }],
+        "url": { "raw": "{{baseUrl}}/circles/{{circleId}}/testing/level", "host": ["{{baseUrl}}"], "path": ["circles", "{{circleId}}", "testing", "level"] }
+      }
+    }
+  ]
+}

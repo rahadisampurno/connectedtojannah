@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+node_modules/
+.next/
+dist/
+.dart_tool/
+build/
+*.tsbuildinfo
+*.log
+backups/
+.DS_Store
+**/.DS_Store

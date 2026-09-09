@@ -1,0 +1,27 @@
+{
+  "name": "@ctj/api",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "start": "node dist/src/main.js",
+    "start:dev": "tsc -w -p tsconfig.json",
+    "test": "tsc -p tsconfig.json && DATABASE_URL=${DATABASE_URL:-postgresql://ctj:ctj-local-development-only@localhost:5432/ctj} node --test dist/test/*.js"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.6",
+    "@nestjs/core": "^11.1.6",
+    "@nestjs/platform-express": "^11.1.6",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "helmet": "^8.1.0",
+    "pg": "^8.23.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.1",
+    "@types/pg": "^8.23.1",
+    "typescript": "^5.9.2"
+  }
+}

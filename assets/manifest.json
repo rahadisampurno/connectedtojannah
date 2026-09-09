@@ -1,0 +1,16 @@
+[
+  {
+    "id": "journey_world_hero_v1",
+    "category": "world/background",
+    "purpose": "Development-only Journey World hero for onboarding and home",
+    "resolution": "1024x1792",
+    "format": "png",
+    "transparent": false,
+    "style": "original premium painterly Islamic fantasy environment",
+    "prompt_version": "v1-2026-09-07",
+    "status": "draft",
+    "file": "assets/generated/draft/journey_world_hero_v1.png",
+    "syariah_review": false,
+    "notes": "Automated constraints pass; human approval required before production."
+  }
+]
