@@ -1,5 +1,10 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { Pool, PoolClient, QueryResultRow } from 'pg';
+import type { PoolClient, QueryResultRow } from 'pg';
+
+// Hostinger preserves CommonJS server externals (the same path used by FMO's
+// mysql2 runtime), while Next.js emits ESM package aliases that are not copied
+// into its `.next` deployment artifact.
+const { Pool } = require('pg') as typeof import('pg');
 
 @Injectable()
 export class DatabaseService implements OnModuleInit, OnModuleDestroy {
