@@ -15,15 +15,6 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
-    "baseUrl": ".",
-    "paths": {
-      "@nestjs/common": [
-        "./node_modules/@nestjs/common"
-      ],
-      "pg": [
-        "./node_modules/@types/pg"
-      ]
-    },
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",

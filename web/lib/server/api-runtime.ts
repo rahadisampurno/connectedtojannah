@@ -2,11 +2,11 @@ import 'server-only';
 import 'reflect-metadata';
 
 import { ServiceUnavailableException } from '@nestjs/common';
-import { AppDataV2Service } from '../../../api/src/app-data-v2.service';
-import { AuthV2Service } from '../../../api/src/auth-v2.service';
-import { DailyV2Service } from '../../../api/src/daily-v2.service';
-import { DatabaseService } from '../../../api/src/database.service';
-import { EmailService } from '../../../api/src/email.service';
+import { AppDataV2Service } from './backend/app-data-v2.service';
+import { AuthV2Service } from './backend/auth-v2.service';
+import { DailyV2Service } from './backend/daily-v2.service';
+import { DatabaseService } from './backend/database.service';
+import { EmailService } from './backend/email.service';
 
 type ApiRuntime = {
   auth: AuthV2Service;

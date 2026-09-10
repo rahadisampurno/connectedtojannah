@@ -1,16 +1,7 @@
 import type { NextConfig } from 'next';
-import path from 'node:path';
 
 const nextConfig: NextConfig = {
-  outputFileTracingRoot: path.join(process.cwd(), '..'),
   serverExternalPackages: ['pg'],
-  turbopack: {
-    root: path.join(process.cwd(), '..'),
-    resolveAlias: {
-      '@nestjs/common': './node_modules/@nestjs/common',
-      pg: './node_modules/pg',
-    },
-  },
   images: { formats: ['image/avif', 'image/webp'] },
   async headers() {
     return [{

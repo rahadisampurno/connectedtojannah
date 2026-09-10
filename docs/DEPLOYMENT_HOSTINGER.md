@@ -2,7 +2,7 @@
 
 ## Arsitektur production
 
-Deploy hanya satu aplikasi Node.js dari folder `web`. UI dan seluruh backend berjalan dalam process Next.js yang sama, dan browser mengakses API same-origin melalui `/api/v1`. Folder `api/src` berisi service domain yang dibundel oleh build Next.js dan tidak dibuat sebagai aplikasi Hostinger kedua.
+Deploy hanya satu aplikasi Node.js dari folder `web`. UI dan seluruh backend di `web/lib/server/backend` berjalan dalam process Next.js yang sama, dan browser mengakses API same-origin melalui `/api/v1`.
 
 Data tetap persisten di PostgreSQL. Karena database tersebut bukan process Node.js aplikasi, ia dapat memakai PostgreSQL eksternal (misalnya Supabase) tanpa melanggar pola satu service/satu aplikasi. Gunakan connection string SSL yang bisa diakses dari internet dan aktifkan backup pada penyedia database.
 

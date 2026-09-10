@@ -6,7 +6,6 @@ Social worship companion dan shared spiritual journey. Aplikasi web mobile-first
 
 - `web/` — satu aplikasi Next.js full-stack mobile-first/PWA (frontend dan API `/api/v1`).
 - `mobile/` — eksperimen Flutter yang dipertahankan sebagai opsi native masa depan.
-- `api/` — service domain dan PostgreSQL yang dipakai ulang oleh runtime server Next.js; bukan service deployment terpisah.
 - `docs/` — keputusan produk, teknis, visual, keamanan, dan deployment.
 - `assets/` — registry aset; hanya aset berstatus `approved` boleh masuk build production.
 
@@ -26,7 +25,7 @@ UI dan API berjalan dari satu process Node.js dan satu origin. API tersedia di `
 
 Routes: `/` landing page publik, `/login` dan `/register` autentikasi aktif, serta `/app` untuk Home, Amalan, Together/Circles, challenge, undangan, Journey/Garden, dan profil.
 
-Untuk production Hostinger, pilih root directory `web`, Node.js 22, build `npm run build`, start `npm start`, dan output `.next`. Aplikasi membutuhkan PostgreSQL eksternal melalui `DATABASE_URL`; detail lengkap ada di [panduan deployment Hostinger](docs/DEPLOYMENT_HOSTINGER.md).
+Untuk production Hostinger, pilih root directory `web`, Node.js 22, build `npm run build`, start `npm start`, dan output `.next`. Service backend berada di `web/lib/server/backend` dan ikut berjalan di process Next.js yang sama. Aplikasi membutuhkan PostgreSQL eksternal melalui `DATABASE_URL`; detail lengkap ada di [panduan deployment Hostinger](docs/DEPLOYMENT_HOSTINGER.md).
 
 ## Menjalankan mobile
 

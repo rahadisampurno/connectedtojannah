@@ -7,7 +7,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { NextRequest, NextResponse } from 'next/server';
-import type { PublicUser } from '../../../api/src/auth-v2.service';
+import type { PublicUser } from './backend/auth-v2.service';
 import { getApiRuntime } from './api-runtime';
 
 type JsonObject = Record<string, unknown>;
