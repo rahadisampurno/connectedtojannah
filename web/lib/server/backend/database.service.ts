@@ -1,20 +1,31 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import type { PoolClient, QueryResultRow } from 'pg';
+import postgres from 'postgres';
 
-// Hostinger preserves CommonJS server externals (the same path used by FMO's
-// mysql2 runtime), while Next.js emits ESM package aliases that are not copied
-// into its `.next` deployment artifact.
-const { Pool } = require('pg') as typeof import('pg');
+type QueryResultRow = Record<string, any>;
+type QueryResult<T extends QueryResultRow> = { rows: T[]; rowCount: number };
+type QueryClient = {
+  query<T extends QueryResultRow = QueryResultRow>(text: string, values?: unknown[]): Promise<QueryResult<T>>;
+};
+
+function queryClient(sql: Pick<postgres.Sql, 'unsafe'>): QueryClient {
+  return {
+    async query<T extends QueryResultRow = QueryResultRow>(text: string, values: unknown[] = []) {
+      const result = await sql.unsafe<T[]>(text, values as never[]);
+      return { rows: Array.from(result), rowCount: result.count };
+    },
+  };
+}
 
 @Injectable()
 export class DatabaseService implements OnModuleInit, OnModuleDestroy {
-  readonly pool = new Pool({ connectionString: process.env.DATABASE_URL, max: Number(process.env.DB_POOL_SIZE ?? 10), idleTimeoutMillis: 30_000, connectionTimeoutMillis: 5_000 });
+  readonly pool = postgres(process.env.DATABASE_URL ?? '', { max: Number(process.env.DB_POOL_SIZE ?? 10), idle_timeout: 30, connect_timeout: 5 });
+  private readonly client = queryClient(this.pool);
   async onModuleInit() { await this.migrate(); }
-  async onModuleDestroy() { await this.pool.end(); }
-  query<T extends QueryResultRow>(text: string, values: unknown[] = []) { return this.pool.query<T>(text, values); }
-  async transaction<T>(operation: (client: PoolClient) => Promise<T>) { const client = await this.pool.connect(); try { await client.query('BEGIN'); const result = await operation(client); await client.query('COMMIT'); return result; } catch (error) { await client.query('ROLLBACK'); throw error; } finally { client.release(); } }
+  async onModuleDestroy() { await this.pool.end({ timeout: 5 }); }
+  query<T extends QueryResultRow>(text: string, values: unknown[] = []) { return this.client.query<T>(text, values); }
+  async transaction<T>(operation: (client: QueryClient) => Promise<T>): Promise<T> { return await this.pool.begin(async sql => operation(queryClient(sql))) as T; }
   private async migrate() {
-    await this.pool.query(`
+    await this.query(`
       CREATE TABLE IF NOT EXISTS users (
         id text PRIMARY KEY, email text UNIQUE NOT NULL, display_name varchar(40) NOT NULL,
         avatar varchar(24) NOT NULL, password_hash text NOT NULL, joined_at timestamptz NOT NULL DEFAULT now(),

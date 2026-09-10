@@ -1,7 +1,6 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ['pg'],
   images: { formats: ['image/avif', 'image/webp'] },
   async headers() {
     return [{

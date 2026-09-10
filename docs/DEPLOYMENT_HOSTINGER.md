@@ -4,8 +4,6 @@
 
 Deploy hanya satu aplikasi Node.js dari folder `web`. UI dan seluruh backend di `web/lib/server/backend` berjalan dalam process Next.js yang sama, dan browser mengakses API same-origin melalui `/api/v1`.
 
-Perintah build juga menyalin dependency server yang ditautkan Next.js ke dalam output `.next`. Langkah ini diperlukan karena deployment output Hostinger tidak mempertahankan symbolic link dependency tersebut.
-
 Data tetap persisten di PostgreSQL. Karena database tersebut bukan process Node.js aplikasi, ia dapat memakai PostgreSQL eksternal (misalnya Supabase) tanpa melanggar pola satu service/satu aplikasi. Gunakan connection string SSL yang bisa diakses dari internet dan aktifkan backup pada penyedia database.
 
 ## Pengaturan hPanel
